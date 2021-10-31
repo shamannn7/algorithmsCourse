@@ -3,7 +3,12 @@ import java.util.Scanner;
 public class Change {
     private static int getChange(int m) {
         //write your code here
-        return m;
+        int tens = m/10;
+        m -= 10*tens;
+        int fives = m/ 5;
+        m -= 5*fives;
+
+        return tens + fives + m;
     }
 
     public static void main(String[] args) {
