@@ -14,23 +14,13 @@ public class PrimitiveCalculator {
             moves[2] = 2;
         }
 
-        for(int i=3; i <= n; i++){
-            if((i % 3 == 0) && (i % 2 == 0)){
-//                dp[i] = Math.min(dp[i-1] + 1, Math.min(dp[i/3] + 1, dp[i/2] +1));
-                if((dp[i/3] <= dp[i-1]) && (dp[i/3] <= dp[i/2] )){
-                    dp[i] = dp[i/3] + 1;
-                    moves[i] = 3;
-                }
-                else if((dp[i/2] <= dp[i-1]) && (dp[i/2] <= dp[i/3] )){
-                    dp[i] = dp[i/2] + 1;
-                    moves[i] = 2;
-                }
-                else {
-                    dp[i] = dp[i-1] + 1;
-                    moves[i] = 1;
-                }
-            }
-            else if(i % 3 == 0){
+        if(n >= 3) {
+            dp[3] = 1;
+            moves[3] = 3;
+        }
+
+        for(int i=4; i <= n; i++){
+            if(i % 3 == 0){
 //                dp[i] = Math.min(dp[i-1] + 1, dp[i/3] + 1);
                 if(dp[i/3] <= dp[i-1]){
                     dp[i] = dp[i/3] + 1;
