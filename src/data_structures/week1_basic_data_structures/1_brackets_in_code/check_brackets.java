@@ -29,19 +29,65 @@ class check_brackets {
         BufferedReader reader = new BufferedReader(input_stream);
         String text = reader.readLine();
 
-        Stack<Bracket> opening_brackets_stack = new Stack<Bracket>();
+        Stack<Bracket> openingBracketsStack = new Stack<>();
         for (int position = 0; position < text.length(); ++position) {
             char next = text.charAt(position);
 
             if (next == '(' || next == '[' || next == '{') {
                 // Process opening bracket, write your code here
+                openingBracketsStack.push(new Bracket(next, position));
             }
 
-            if (next == ')' || next == ']' || next == '}') {
+            if (next == ')') {
                 // Process closing bracket, write your code here
+                if(openingBracketsStack.empty()){
+                    System.out.println(position + 1);
+                    return;
+                }
+                else{
+                    Bracket top = openingBracketsStack.pop();
+                    if(top.type != '('){
+                        System.out.println(position + 1);
+                        return;
+                    }
+                }
+            }
+            if (next == ']') {
+                // Process closing bracket, write your code here
+                if(openingBracketsStack.empty()){
+                    System.out.println(position + 1);
+                    return;
+                }
+                else{
+                    Bracket top = openingBracketsStack.pop();
+                    if(top.type != '['){
+                        System.out.println(position + 1);
+                        return;
+                    }
+                }
+            }
+            if (next == '}') {
+                // Process closing bracket, write your code here
+                if(openingBracketsStack.empty()){
+                    System.out.println(position + 1);
+                    return;
+                }
+                else{
+                    Bracket top = openingBracketsStack.pop();
+                    if(top.type != '{'){
+                        System.out.println(position + 1);
+                        return;
+                    }
+                }
             }
         }
 
+        if (openingBracketsStack.empty()){
+            System.out.println("Success");
+        }
+        else{
+            System.out.println(openingBracketsStack.pop().position + 1);
+        }
         // Printing answer, write your code here
     }
 }
