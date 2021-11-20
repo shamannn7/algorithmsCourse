@@ -84,17 +84,20 @@ public class tree_height {
 			List<Integer> rootChildren = tree.get(-1);
             if(rootChildren != null){
                 q.addAll(rootChildren);
-                maxHeight++;
             }
 			while (!q.isEmpty()){
+                int size = q.size();// we take all current children from the queue
 
-				Integer next = q.poll();
-                List<Integer> children = tree.get(next);
-                if(children != null){
-                    maxHeight++;
-                    q.addAll(children);
+                for (int i = 0; i < size; i++) {// this way we take all children of the level
+                    Integer next = q.poll();
+                    List<Integer> children = tree.get(next);
+                    if(children != null){
+                        q.addAll(children);
+                    }
                 }
-			}
+
+                maxHeight++;
+            }
 
 //			for (int vertex = 0; vertex < n; vertex++) {
 //				int height = 0;
