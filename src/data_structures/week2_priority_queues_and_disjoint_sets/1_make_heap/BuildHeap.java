@@ -38,8 +38,9 @@ public class BuildHeap {
       // This turns the given array into a heap, 
       // but in the worst case gives a quadratic number of swaps.
       //
+//        int size = data.length - 1;
         int size = data.length;
-        for (int i = size/2; i >= 0; i--) {
+        for (int i = size/2 - 1; i >= 0; i--) {
             moveDown(size, i);
         }
 
@@ -58,12 +59,12 @@ public class BuildHeap {
 
     void moveDown(int size, int i){
         int maxIndex = i;
-        int l = 2*i;//left child
-        if((l <= size) && (data[l] > data[maxIndex])){
+        int l = 2*i + 1;//left child
+        if((l < size) && (data[l] < data[maxIndex])){
             maxIndex = l;
         }
-        int r = 2*i + 1; // right child
-        if((r <= size) && (data[r] > data[maxIndex])){
+        int r = 2*i + 2; // right child
+        if((r < size) && (data[r] < data[maxIndex])){
             maxIndex = r;
         }
         if (i != maxIndex){
