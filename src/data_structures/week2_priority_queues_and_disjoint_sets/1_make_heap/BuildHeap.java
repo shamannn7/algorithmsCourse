@@ -38,17 +38,45 @@ public class BuildHeap {
       // This turns the given array into a heap, 
       // but in the worst case gives a quadratic number of swaps.
       //
-      // TODO: replace by a more efficient implementation
-      for (int i = 0; i < data.length; ++i) {
-        for (int j = i + 1; j < data.length; ++j) {
-          if (data[i] > data[j]) {
-            swaps.add(new Swap(i, j));
-            int tmp = data[i];
-            data[i] = data[j];
-            data[j] = tmp;
-          }
+        int size = data.length;
+        for (int i = size/2; i >= 0; i--) {
+            moveDown(size, i);
         }
-      }
+
+            // TODO: replace by a more efficient implementation
+//      for (int i = 0; i < data.length; ++i) {
+//        for (int j = i + 1; j < data.length; ++j) {
+//          if (data[i] > data[j]) {
+//            swaps.add(new Swap(i, j));
+//            int tmp = data[i];
+//            data[i] = data[j];
+//            data[j] = tmp;
+//          }
+//        }
+//      }
+    }
+
+    void moveDown(int size, int i){
+        int maxIndex = i;
+        int l = 2*i;//left child
+        if((l <= size) && (data[l] > data[maxIndex])){
+            maxIndex = l;
+        }
+        int r = 2*i + 1; // right child
+        if((r <= size) && (data[r] > data[maxIndex])){
+            maxIndex = r;
+        }
+        if (i != maxIndex){
+            swap(i, maxIndex);
+            moveDown(size, maxIndex);
+        }
+    }
+
+    private void swap(int i, int j) {
+        swaps.add(new Swap(i, j));
+        int tmp = data[i];
+        data[i] = data[j];
+        data[j] = tmp;
     }
 
     public void solve() throws IOException {
