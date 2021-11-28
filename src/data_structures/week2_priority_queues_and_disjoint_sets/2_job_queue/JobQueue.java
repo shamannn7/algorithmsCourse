@@ -57,22 +57,14 @@ public class JobQueue {
             workersQ.add(new Tuple(0, i));
         }
 
-        PriorityQueue<Tuple> jobsQ = new PriorityQueue<>(Comparator.comparingInt((Tuple o) -> o.id));
         for (int i = 0; i < jobs.length; i++) {
-            jobsQ.add(new Tuple(jobs[i], i));
-        }
-
-        int i = 0;
-        while (!jobsQ.isEmpty() && !workersQ.isEmpty()){
-            Tuple currentJob = jobsQ.poll();
-            Tuple currentWorker = workersQ.poll(); // TODO poll only threads which finished
+            Tuple currentWorker = workersQ.poll();
 
             assignedWorker[i] = currentWorker.id;
             startTime[i] = currentWorker.time;
 
-            currentWorker.time = startTime[i] + currentJob.time;//updating finishing time
+            currentWorker.time = startTime[i] + jobs[i];//updating finishing time
             workersQ.add(currentWorker);
-            i++;
         }
     }
 
