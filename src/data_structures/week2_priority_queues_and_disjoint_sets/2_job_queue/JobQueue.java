@@ -57,7 +57,7 @@ public class JobQueue {
             workersQ.add(new Tuple(0, i));
         }
 
-        PriorityQueue<Tuple> jobsQ = new PriorityQueue<>(myComparator);
+        PriorityQueue<Tuple> jobsQ = new PriorityQueue<>(Comparator.comparingInt((Tuple o) -> o.id));
         for (int i = 0; i < jobs.length; i++) {
             jobsQ.add(new Tuple(jobs[i], i));
         }
