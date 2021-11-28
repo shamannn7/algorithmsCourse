@@ -1,5 +1,16 @@
 import java.io.*;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
+
+class Tuple{
+    long time;
+    int id;
+    Tuple(int time, int id){
+        this.time = time;
+        this.id = id;
+    }
+}
 
 public class JobQueue {
     private int numWorkers;
@@ -29,24 +40,59 @@ public class JobQueue {
             out.println(assignedWorker[i] + " " + startTime[i]);
         }
     }
-
     private void assignJobs() {
-        // TODO: replace this code with a faster algorithm.
         assignedWorker = new int[jobs.length];
         startTime = new long[jobs.length];
-        long[] nextFreeTime = new long[numWorkers];
-        for (int i = 0; i < jobs.length; i++) {
-            int duration = jobs[i];
-            int bestWorker = 0;
-            for (int j = 0; j < numWorkers; ++j) {
-                if (nextFreeTime[j] < nextFreeTime[bestWorker])
-                    bestWorker = j;
+
+        Comparator<Tuple> myComparator = (Tuple o1, Tuple o2) -> {
+            if (o1.time == o2.time) {
+                return Integer.compare(o1.id, o2.id);
+            } else {
+                return Long.compare(o1.time, o2.time);
             }
-            assignedWorker[i] = bestWorker;
-            startTime[i] = nextFreeTime[bestWorker];
-            nextFreeTime[bestWorker] += duration;
+        };
+
+        PriorityQueue<Tuple> workersQ = new PriorityQueue<>(myComparator);
+        for (int i = 0; i < numWorkers; i++) {
+            workersQ.add(new Tuple(0, i));
+        }
+
+        PriorityQueue<Tuple> jobsQ = new PriorityQueue<>(myComparator);
+        for (int i = 0; i < jobs.length; i++) {
+            jobsQ.add(new Tuple(jobs[i], i));
+        }
+
+        int i = 0;
+        while (!jobsQ.isEmpty() && !workersQ.isEmpty()){
+            Tuple currentJob = jobsQ.poll();
+            Tuple currentWorker = workersQ.poll(); // TODO poll only threads which finished
+
+            assignedWorker[i] = currentWorker.id;
+            startTime[i] = currentWorker.time;
+
+            currentWorker.time = startTime[i] + currentJob.time;//updating finishing time
+            workersQ.add(currentWorker);
+            i++;
         }
     }
+
+//        private void assignJobs() {
+//        // TODO: replace this code with a faster algorithm.
+//    assignedWorker = new int[jobs.length];
+//    startTime = new long[jobs.length];
+//        long[] nextFreeTime = new long[numWorkers];
+//        for (int i = 0; i < jobs.length; i++) {
+//            int duration = jobs[i];
+//            int bestWorker = 0;
+//            for (int j = 0; j < numWorkers; ++j) {
+//                if (nextFreeTime[j] < nextFreeTime[bestWorker])
+//                    bestWorker = j;
+//            }
+//            assignedWorker[i] = bestWorker;
+//            startTime[i] = nextFreeTime[bestWorker];
+//            nextFreeTime[bestWorker] += duration;
+//        }
+//    }
 
     public void solve() throws IOException {
         in = new FastScanner();
